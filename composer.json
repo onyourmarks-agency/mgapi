@@ -1,0 +1,30 @@
+{
+    "name": "tdeNL/mgapi",
+    "description": "Mailigen.com PHP API wrapper",
+    "keywords": [
+        "mgapi",
+        "Mailigen",
+        "mailing"
+    ],
+    "homepage": "https://github.com/tdeNL/mgapi",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jerome Anker",
+            "email": "jerome@tde.nl",
+            "homepage": "https://www.tde.nl",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mailigen\\MGAPI\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
