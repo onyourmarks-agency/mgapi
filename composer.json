@@ -1,5 +1,5 @@
 {
-    "name": "tdeNL/mgapi",
+    "name": "tde/mgapi",
     "description": "Mailigen.com PHP API wrapper",
     "keywords": [
         "mgapi",
