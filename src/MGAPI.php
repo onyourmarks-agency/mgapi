@@ -20,7 +20,7 @@ class MGAPI
     public $errorCode;
 
     /**
-     * API server adrese
+     * API server URL
      */
     protected $apiUrl;
 
@@ -51,19 +51,18 @@ class MGAPI
     }
 
     /**
-     * @param $seconds
+     * @param integer $seconds
      *
-     * @return bool
+     * @return void
+     * @throws \Exception
      */
     function setTimeout($seconds)
     {
-        if (is_int($seconds)) {
-            $this->timeout = $seconds;
-
-            return true;
+        if (!is_int($seconds)) {
+            throw new \Exception('Seconds for the timeout should be integers.');
         }
 
-        return false;
+        $this->timeout = $seconds;
     }
 
     /**
@@ -83,6 +82,7 @@ class MGAPI
      * @param string $cid Kampaņas, kurai vajag noņemt izsūtīšanas laiku kaut kad nākotnē, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function campaignUnschedule($cid)
     {
@@ -102,6 +102,7 @@ class MGAPI
      * @param string $schedule_time Laiks, kad izsūtīt. Laiku jānorāda šādā formātā YYYY-MM-DD HH:II:SS pēc <strong>GMT</strong>
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function campaignSchedule($cid, $schedule_time)
     {
@@ -121,6 +122,7 @@ class MGAPI
      * @param string $cid Kampaņas, kuru vajag atsākt, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function campaignResume($cid)
     {
@@ -139,6 +141,7 @@ class MGAPI
      * @param string $cid Kampaņas, kuru vajag apstādināt, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function campaignPause($cid)
     {
@@ -157,6 +160,7 @@ class MGAPI
      * @param string $cid Kampaņas, kuru vajag nosūtīt, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function campaignSendNow($cid)
     {
@@ -177,6 +181,7 @@ class MGAPI
      * @param string $send_type   Nav obligāts. Ja vēlaties nosūtīt abus formātus, norādiet "html", ja tikai teksta, tad "plain"
      *
      * @return boolean true ja veiksmīgi
+     * @throws \Exception
      */
     function campaignSendTest($cid, $test_emails = [], $send_type = null)
     {
@@ -199,6 +204,7 @@ class MGAPI
      * @returnf string layout Šablona izkārtojums - "basic", "left_column", "right_column" vai "postcard"
      * @returnf string preview_image URL adrese līdz priekšskatījuma attēlam
      * @returnf array source Šablona HTML kods
+     * @throws \Exception
      */
     function campaignTemplates()
     {
@@ -248,6 +254,7 @@ class MGAPI
      *                          string event-datemerge Nav obligāts. Merge lauks, kurš tiek ņemts vērā, kad izsūtīt. Šis ir nepieciešams, ja event ir norādīt "date" vai "annual"
      *
      * @return string Atgriež jaunās kampaņas ID
+     * @throws \Exception
      */
     function campaignCreate($type, $options, $content, $type_opts = null)
     {
@@ -274,6 +281,7 @@ class MGAPI
      * @param mixed  $value Iespējamās vērtības parametram ( skatīties campaignCreate() options lauku )
      *
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function campaignUpdate($cid, $name, $value)
     {
@@ -294,6 +302,7 @@ class MGAPI
      * @param string $cid Kampaņas, kuru vajag kopēt, ID
      *
      * @return string Atgriežam jaunās kampaņas ID
+     * @throws \Exception
      */
     function campaignReplicate($cid)
     {
@@ -312,6 +321,7 @@ class MGAPI
      * @param string $cid Kampaņas, kuru vajag dzēst, ID
      *
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function campaignDelete($cid)
     {
@@ -360,6 +370,7 @@ class MGAPI
      * @returnf boolean track_clicks_text Skaitīt vai neskaitīt klikšķus plain vēstulē
      * @returnf boolean track_clicks_html Skaitīt vai neskaitīt klikšķus HTML vēstulē
      * @returnf boolean track_opens Skaitīt vai neskaitīt atvēršanu
+     * @throws \Exception
      */
     function campaigns($filters = [], $start = 0, $limit = 25)
     {
@@ -395,6 +406,7 @@ class MGAPI
      * @returnf date last_click Datums, kad pēdējo reizi spiests uz linkiem
      * @returnf integer users_who_clicked Lietotāju skaits, kas spieduši uz saitēm
      * @returnf integer emails_sent Kopējais skaits, cik vēstules ir izsūtītas
+     * @throws \Exception
      */
     function campaignStats($cid)
     {
@@ -417,6 +429,7 @@ class MGAPI
      * @returnf integer clicks Kopējais klikšķu skaits
      * @returnf integer unique Unikālo klikšķu skaits
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function campaignClickStats($cid)
     {
@@ -444,6 +457,7 @@ class MGAPI
      * @returnf date date
      * @returnf string device
      * @returnf string browser
+     * @throws \Exception
      */
     function campaignClickStatsDetails($cid, $filters = [], $start = 0, $limit = 25)
     {
@@ -478,6 +492,7 @@ class MGAPI
      * @returnf integer opens_pct Skaits, cik procentuāli ir atvērts ar šo domēnu
      * @returnf integer clicks_pct Skaits, cik procentuāli no šī domēna ir spieduši
      * @returnf integer unsubs_pct Procentuāli, cik daudz no šī domēna ir atrakstījušies
+     * @throws \Exception
      */
     function campaignEmailDomainPerformance($cid)
     {
@@ -498,6 +513,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignHardBounces($cid, $start = 0, $limit = 1000)
     {
@@ -520,6 +536,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignSoftBounces($cid, $start = 0, $limit = 1000)
     {
@@ -542,6 +559,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignBlockedBounces($cid, $start = 0, $limit = 1000)
     {
@@ -564,6 +582,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignTemporaryBounces($cid, $start = 0, $limit = 1000)
     {
@@ -586,6 +605,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignGenericBounces($cid, $start = 0, $limit = 1000)
     {
@@ -608,6 +628,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignUnsubscribes($cid, $start = 0, $limit = 1000)
     {
@@ -631,6 +652,7 @@ class MGAPI
      * @returnf string code Valsts kods ISO3166 formātā, satur 2 simbolus
      * @returnf string name Valsts nosaukums
      * @returnf int opens Skaits, cik daudz atvērts
+     * @throws \Exception
      */
     function campaignGeoOpens($cid)
     {
@@ -653,6 +675,7 @@ class MGAPI
      * @returnf string code Valsts kods ISO3166 formātā, satur 2 simbolus
      * @returnf string name Valsts nosaukums
      * @returnf int opens Skaits, cik daudz atvērts
+     * @throws \Exception
      */
     function campaignGeoOpensByCountry($cid, $code)
     {
@@ -674,6 +697,7 @@ class MGAPI
      * @param integer $limit Nav obligāts. Rezultātu skaits lapā. Pēc noklusējuma 1000. Maksimālā vērtība ir 15000
      *
      * @return array Epastu saraksts
+     * @throws \Exception
      */
     function campaignForwardStats($cid, $start = 0, $limit = 1000)
     {
@@ -699,6 +723,7 @@ class MGAPI
      * @returnf string date Laiks, kad vēstule saņemta
      * @returnf string email Epasta arese, uz kuru neizdevās nosūtīt
      * @returnf string message Atsviestēs vēstules saturs
+     * @throws \Exception
      */
     function campaignBounceMessages($cid, $start = 0, $limit = 25)
     {
@@ -725,6 +750,7 @@ class MGAPI
      * string email Epasta adrese
      * integer count Cik reizes atvēra
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function campaignOpened($cid, $start = 0, $limit = 25)
     {
@@ -749,6 +775,7 @@ class MGAPI
      * @returnf array data Epastu saraksts
      * string email Epasta adrese
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function campaignNotOpened($cid, $start = 0, $limit = 25)
     {
@@ -776,6 +803,7 @@ class MGAPI
      *                        string public_title
      *
      * @return string Atgriež jaunā saraksta ID
+     * @throws \Exception
      */
     function listCreate($title, $options = null)
     {
@@ -797,6 +825,7 @@ class MGAPI
      * @param        $value
      *
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function listUpdate($id, $name, $value)
     {
@@ -817,6 +846,7 @@ class MGAPI
      * @param string $id Saraksta, kuru vajag labot, ID
      *
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function listDelete($id)
     {
@@ -846,6 +876,7 @@ class MGAPI
      * @returnf string default_from_email Noklusējuma vērtība From Email priekš kampaņām, kas izmanto šo sarakstu
      * @returnf string default_subject Noklusējuma vērtība Subject priekš kampaņām, kas izmanto šo sarakstu
      * @returnf string default_language Noklusēja valoda saraksta formām
+     * @throws \Exception
      */
     function lists($start = 0, $limit = 1000)
     {
@@ -872,6 +903,7 @@ class MGAPI
      * @returnf string order Kārtas numurs
      * @returnf string default Vērtība pēc noklusējuma
      * @returnf string tag Merge tags, kas tiek izmantots formās, listSubscribe() un listUpdateMember()
+     * @throws \Exception
      */
     function listMergeVars($id)
     {
@@ -897,6 +929,7 @@ class MGAPI
      *                        string default_value Nav obligāts. Vērtība pēc noklusējuma
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listMergeVarAdd($id, $tag, $name, $options = [])
     {
@@ -920,6 +953,7 @@ class MGAPI
      * @param array  $options Parametri merge taga atjaunošanai. Pareizus parametrus skatīties pie metodes listMergeVarAdd()
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listMergeVarUpdate($id, $tag, $options)
     {
@@ -941,6 +975,7 @@ class MGAPI
      * @param string $tag Merge tags, kuru vajag izdzēst
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listMergeVarDel($id, $tag)
     {
@@ -966,6 +1001,7 @@ class MGAPI
      * @param boolean $send_welcome    - Nav obligats. Sutit vai nesutit paldies vestuli. Pec noklusejuma false
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listSubscribe(
         $id,
@@ -1000,6 +1036,7 @@ class MGAPI
      * @param boolean $update_existing Vai atjaunot eksistejoos epastus. Pec noklusejuma false (atgriezis kludas pazinojumu)
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listSubscribeSMS($id, $phone, $merge_vars, $update_existing = false)
     {
@@ -1025,6 +1062,7 @@ class MGAPI
      * @param boolean $send_notify   Nosutit vai nesutit pazinojumu uz epastu, kas noradits saraksta opcijas. Pec noklusejuma false
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listUnsubscribe($id, $email_address, $delete_member = false, $send_goodbye = true, $send_notify = true)
     {
@@ -1050,6 +1088,7 @@ class MGAPI
      * @param boolean $send_notify   Nosutit vai nesutit pazinojumu uz epastu, kas noradits saraksta opcijas. Pec noklusejuma false
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listUnsubscribeSMS($id, $phone, $delete_member = false, $send_notify = true)
     {
@@ -1074,6 +1113,7 @@ class MGAPI
      * @param string $email_type    Epasta tips: "html" vai "plain". Nav obligats
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function listUpdateMember($id, $email_address, $merge_vars, $email_type = '')
     {
@@ -1101,6 +1141,7 @@ class MGAPI
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function listBatchSubscribe($id, $batch, $double_optin = true, $update_existing = false)
     {
@@ -1128,6 +1169,7 @@ class MGAPI
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "phone"
+     * @throws \Exception
      */
     function listBatchSubscribeSMS($id, $batch, $doubleOptIn = false, $update_existing = false)
     {
@@ -1156,6 +1198,7 @@ class MGAPI
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function listBatchUnsubscribe($id, $emails, $delete_member = false, $send_goodbye = true, $send_notify = false)
     {
@@ -1184,6 +1227,7 @@ class MGAPI
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function listBatchUnsubscribeSMS($id, $phones, $delete_member = false, $send_notify = false)
     {
@@ -1210,6 +1254,7 @@ class MGAPI
      * @return array Masivs ar lietotaju sarakstu
      * @returnf string email Lietotaja epasts
      * @returnf date timestamp Peivienoanas datums
+     * @throws \Exception
      */
     function listMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
     {
@@ -1231,6 +1276,7 @@ class MGAPI
      * @param int    $limit
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function listMembersByMerge($id, $merge_var, $merge_value = '', $status = 'subscribed', $start = 0, $limit = 100)
     {
@@ -1263,6 +1309,7 @@ class MGAPI
      * @returnf string ip_opt IP adrese, no kuras tika apstiprinats epasts
      * @returnf string ip_signup IP adrese, no kuras tika aizpildita forma
      * @returnf date timestamp Laiks, kad tika pievienots sarakstam
+     * @throws \Exception
      */
     function listMemberInfo($id, $email_address)
     {
@@ -1292,6 +1339,7 @@ class MGAPI
      * @returnf string day Year, month and day returned in YYYY-MM-DD format, if $split_by parameter is set to day
      * @returnf integer existing Number of emails at the beginning of given period of time
      * @returnf integer imports Number of how many emails of new recipients have been added during the current period of time
+     * @throws \Exception
      */
     function listGrowthHistory($id, $split_by = 'month', $start_date = null, $end_date = null, $start = 0, $limit = 25)
     {
@@ -1320,6 +1368,7 @@ class MGAPI
      * @returnf string name Saraksta segmenta nosaukums
      * @returnf date date_created Saraksta izveidošanas datums.
      * @returnf integer member_count Lietotāju skaits sarakstā
+     * @throws \Exception
      */
     function listSegments($id)
     {
@@ -1344,6 +1393,7 @@ class MGAPI
      *                             string value Vērtība, priekš condition
      *
      * @return string Atgriež jaunā segmenta ID
+     * @throws \Exception
      */
     function listSegmentCreate($list, $title, $match, $filter, $auto_update = false)
     {
@@ -1367,6 +1417,7 @@ class MGAPI
      * @param        $value
      *
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function listSegmentUpdate($sid, $name, $value)
     {
@@ -1386,6 +1437,7 @@ class MGAPI
      * @param string $sid Segmenta, kuru vajag dzēst, ID
      *
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function listSegmentDelete($sid)
     {
@@ -1411,6 +1463,7 @@ class MGAPI
      * @returnf string id Lietotaja ID
      * @returnf string list Saraksta ID
      * @returnf date timestamp Peivienoanas datums
+     * @throws \Exception
      */
     function listSegmentMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
     {
@@ -1431,6 +1484,7 @@ class MGAPI
      * @param string $cid SMS kampaņa, kurai vajag noņemt izsūtīšanas laiku kaut kad nākotnē, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function smsCampaignUnschedule($cid)
     {
@@ -1449,6 +1503,7 @@ class MGAPI
      * @param string $schedule_time Laiks, kad izsūtīt. Laiku jānorāda šādā formātā YYYY-MM-DD HH:II:SS pēc <strong>GMT</strong>
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function smsCampaignSchedule($cid, $schedule_time)
     {
@@ -1467,6 +1522,7 @@ class MGAPI
      * @param string $cid SMS kampaņa, kuru vajag nosūtīt, ID
      *
      * @return boolean true ja ir veiksmīgi
+     * @throws \Exception
      */
     function smsCampaignSendNow($cid)
     {
@@ -1483,6 +1539,7 @@ class MGAPI
      * @return array Masīvs, kas satur SMS šablonus
      * @returnf integer id Šablona ID
      * @returnf string source Šablona teksts
+     * @throws \Exception
      */
     function smsCampaignTemplates()
     {
@@ -1512,6 +1569,7 @@ class MGAPI
      *                       integer template_id Nav obligāts. Lietotāja SMS šablona id, nu kura tiks paņemts SMS saturs. Var atrast ar smsCampaignTemplates()
      *
      * @return string Atgriež jaunās SMS kampaņas ID
+     * @throws \Exception
      */
     function smsCampaignCreate($options, $content)
     {
@@ -1535,6 +1593,7 @@ class MGAPI
      * @param mixed  $value Iespējamās vērtības parametram ( skatīties campaignCreate() options lauku )
      *
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function smsCampaignUpdate($cid, $name, $value)
     {
@@ -1554,6 +1613,7 @@ class MGAPI
      * @param string $cid SMS kampaņa, kuru vajag kopēt, ID
      *
      * @return string Atgriežam jaunās SMS kampaņas ID
+     * @throws \Exception
      */
     function smsCampaignReplicate($cid)
     {
@@ -1571,6 +1631,7 @@ class MGAPI
      * @param string $cid SMS kampaņa, kuru vajag dzēst, ID
      *
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
+     * @throws \Exception
      */
     function smsCampaignDelete($cid)
     {
@@ -1610,6 +1671,7 @@ class MGAPI
      * @returnf boolean track_clicks Skaitīt vai neskaitīt klikšķus
      * @returnf boolean unicode Izmantot vai neizmantot unikodu
      * @returnf boolean concatenate Sadalīt vai nesadalīt vairākās īsziņās garāku īsziņu
+     * @throws \Exception
      */
     function smsCampaigns($filters = [], $start = 0, $limit = 25)
     {
@@ -1640,6 +1702,7 @@ class MGAPI
      * @returnf date last_click Datums, kad pēdējo reizi spiests uz linkiem
      * @returnf integer users_who_clicked Lietotāju skaits, kas spieduši uz saitēm
      * @returnf integer sms_sent Kopējais skaits, cik vēstules ir izsūtītas
+     * @throws \Exception
      */
     function smsCampaignStats($cid)
     {
@@ -1659,6 +1722,7 @@ class MGAPI
      * @returnf integer clicks Kopējais klikšķu skaits
      * @returnf integer unique Unikālo klikšķu skaits
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function smsCampaignClickStats($cid)
     {
@@ -1680,6 +1744,7 @@ class MGAPI
      * @return array bounces Masīvs, kas satur nepiegādātās SMS
      * @returnf string phone Tālruņa numurs, uz kuru neizdevās nosūtīt
      * @returnf string reason Iemesls, kāpēc netika piegādāts
+     * @throws \Exception
      */
     function smsCampaignBounces($cid, $start = 0, $limit = 25)
     {
@@ -1705,6 +1770,7 @@ class MGAPI
      *
      * @returnf boolean Vai ir pieņemts izskatīšanai
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function smsSenderIdRegister($sender, $phone, $company, $fullName, $companyPosition, $comments = '')
     {
@@ -1727,6 +1793,7 @@ class MGAPI
      * @param string $email_address Epasta adrese, ko japievieno sarakstam
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function suppressedListSubscribe($email_address)
     {
@@ -1744,6 +1811,7 @@ class MGAPI
      * @param string $email_address Epasta adrese
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
      */
     function suppressedListUnsubscribe($email_address)
     {
@@ -1764,6 +1832,7 @@ class MGAPI
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function suppressedListBatchSubscribe($batch)
     {
@@ -1784,6 +1853,7 @@ class MGAPI
      * @returnf integer error_count Skaits, cik neizdevas
      * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function suppressedListBatchUnsubscribe($emails)
     {
@@ -1804,6 +1874,7 @@ class MGAPI
      * @return array Masivs ar lietotaju sarakstu
      * @returnf string email Lietotaja epasts
      * @returnf date timestamp Pievienošanas datums
+     * @throws \Exception
      */
     function suppressedListMembers($start = 0, $limit = 100)
     {
@@ -1830,6 +1901,7 @@ class MGAPI
      * @returnf datetime last_login Datums, kad pedejo reizi bija ielogojies caur web
      * @returnf array contact Masivs, kas satur kontkatinformaciju: Vards, uzvards, epasts, uznemuma nosaukums, adrese, majas lapas adrese, telefons, fakss
      * @returnf array orders Masivs, kas satur informaciju par samaksatajiem rekiniem: rekina numurs, plans, cena, valuta, izrakstianas datums, pakas deriguma termin
+     * @throws \Exception
      */
     function getAccountDetails()
     {
@@ -1847,6 +1919,7 @@ class MGAPI
      * @param string $email_address epasta adrese
      *
      * @return array an array Masivs, kas satur sarakstu ID
+     * @throws \Exception
      */
     function listsForEmail($email_address)
     {
@@ -1870,6 +1943,7 @@ class MGAPI
      * @returnf string apikey o atslegu var izmantot, lai pieslegtos API
      * @returnf string created_at Datums, kad atslega ir izveidota
      * @returnf string expired_at Datums, kad ta tika atzimeta, ka neaktiva
+     * @throws \Exception
      */
     function apikeys($username, $password, $expired = false)
     {
@@ -1891,6 +1965,7 @@ class MGAPI
      * @param string $password lietotaja parole
      *
      * @return string atgrie˛ jaunu API atslegu
+     * @throws \Exception
      */
     function apikeyAdd($username, $password)
     {
@@ -1911,6 +1986,7 @@ class MGAPI
      * @param string $password lietotaja parole
      *
      * @return boolean true, ja izdevas nomainit statusu
+     * @throws \Exception
      */
     function apikeyExpire($username, $password)
     {
@@ -1931,6 +2007,7 @@ class MGAPI
      * @param string $password lietotaja parole
      *
      * @return string tiek atgriezta API atslega, ja tadas vel nav, tad tiek izveidota
+     * @throws \Exception
      */
     function login($username, $password)
     {
@@ -1947,6 +2024,7 @@ class MGAPI
      * @example mgapi_ping.php
      * @example xml-rpc_ping.php
      * @return string tiek atgriezts teksts "Everything's Ok!", ja viss ir kartiba, ja nav, tad atgrie˛ kludas pazinojumu
+     * @throws \Exception
      */
     function ping()
     {
@@ -1957,6 +2035,7 @@ class MGAPI
 
     /**
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function webhooks()
     {
@@ -1970,6 +2049,7 @@ class MGAPI
      * @param null $options
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function webhookCreate($title, $options = null)
     {
@@ -1986,6 +2066,7 @@ class MGAPI
      * @param $value
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function webhookUpdate($wid, $name, $value)
     {
@@ -2001,6 +2082,7 @@ class MGAPI
      * @param $wid
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function webhookDelete($wid)
     {
@@ -2014,6 +2096,7 @@ class MGAPI
      * @param $wid
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function webhookReplicate($wid)
     {
@@ -2031,6 +2114,7 @@ class MGAPI
      * @param $params
      *
      * @return array|bool|mixed|string
+     * @throws \Exception
      */
     function callServer($method, $params)
     {
@@ -2053,11 +2137,8 @@ class MGAPI
 
         $sock = fsockopen($host, 80, $errno, $errstr, 30);
         if (!$sock) {
-            $this->errorMessage = "Could not connect (ERR $errno: $errstr)";
-            $this->errorCode = "-99";
             ob_end_clean();
-
-            return false;
+            throw new \Exception('Could not connect socket: ' . $errstr, $errno);
         }
 
         $response = "";
@@ -2071,16 +2152,11 @@ class MGAPI
         }
 
         if ($info["timed_out"]) {
-            $this->errorMessage = "Could not read response (timed out)";
-            $this->errorCode = -98;
+            throw new \Exception('Could not read response (timed out)');
         }
 
         fclose($sock);
         ob_end_clean();
-
-        if ($info["timed_out"]) {
-            return false;
-        }
 
         list($throw, $response) = explode("\r\n\r\n", $response, 2);
 
@@ -2090,17 +2166,10 @@ class MGAPI
 
         $serial = unserialize($response);
         if ($response && $serial === false) {
-            $response = ["error" => "Bad Response.  Got This: " . $response, "code" => "-99"];
-        } else {
-            $response = $serial;
+            throw new \Exception('Bad response received: ' . $response);
         }
 
-        if (is_array($response) && isset($response["error"])) {
-            $this->errorMessage = $response["error"];
-            $this->errorCode = $response["code"];
-
-            return false;
-        }
+        $response = $serial;
 
         return $response;
     }
