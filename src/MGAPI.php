@@ -1321,6 +1321,24 @@ class MGAPI
     }
 
     /**
+     * @example mgapi_listMemberDelete.php
+     *
+     * @param string $id            Saraksta ID. Saraksta ID var atrast ar lists() metodi
+     * @param string $email_address Epasta adrese vai "id", ko var atrast ar "listMemberInfo" metodi
+     *
+     * @return boolean true ja ir izdevies, false ja nav izdevies
+     * @throws \Exception
+     */
+    function listMemberDelete($id, $email_address)
+    {
+        $params = [];
+        $params['id'] = $id;
+        $params['email_address'] = $email_address;
+
+        return $this->callServer('listMemberDelete', $params);
+    }
+
+    /**
      * List growth history by specific time intervals
      *
      * @example mgapi_listGrowthHistory.php
