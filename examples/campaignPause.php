@@ -2,8 +2,10 @@
 /**
 This Example shows how to campaignPause using the MGAPI.php class and do some basic error checking.
 **/
-require_once 'inc/MGAPI.class.php';
-require_once 'inc/config.inc.php'; //contains apikey
+use Mailigen\MGAPI\MGAPI;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/inc/config.inc.php';
 
 $api = new MGAPI($apikey);
 
