@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="TDE">
+	<description>The TDE coding standard.</description>
+	<rule ref="PSR2"/>
+
+	<file>src/</file>
+
+	<exclude-pattern>vendor</exclude-pattern>
+</ruleset>

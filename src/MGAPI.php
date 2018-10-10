@@ -7,17 +7,7 @@ namespace Mailigen\MGAPI;
  */
 class MGAPI
 {
-    const API_VERSION = "1.8";
-
-    /**
-     * @var string
-     */
-    public $errorMessage;
-
-    /**
-     * @var string
-     */
-    public $errorCode;
+    const API_VERSION = '1.8';
 
     /**
      * API server URL
@@ -44,9 +34,9 @@ class MGAPI
      *
      * @param $apiKey string API key to use
      */
-    function __construct($apiKey)
+    public function __construct($apiKey)
     {
-        $this->apiUrl = parse_url("http://api.mailigen.com/" . self::API_VERSION . "/?output=php");
+        $this->apiUrl = 'http://api.mailigen.com/' . self::API_VERSION . '/?output=json';
         $this->apiKey = $apiKey;
     }
 
@@ -56,7 +46,7 @@ class MGAPI
      * @return void
      * @throws \Exception
      */
-    function setTimeout($seconds)
+    public function setTimeout($seconds)
     {
         if (!is_int($seconds)) {
             throw new \Exception('Seconds for the timeout should be integers.');
@@ -68,7 +58,7 @@ class MGAPI
     /**
      * @return int
      */
-    function getTimeout()
+    public function getTimeout()
     {
         return $this->timeout;
     }
@@ -84,12 +74,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function campaignUnschedule($cid)
+    public function campaignUnschedule($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignUnschedule", $params);
+        return $this->callServer('campaignUnschedule', $params);
     }
 
     /**
@@ -104,13 +94,13 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function campaignSchedule($cid, $schedule_time)
+    public function campaignSchedule($cid, $schedule_time)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["schedule_time"] = $schedule_time;
+        $params['cid'] = $cid;
+        $params['schedule_time'] = $schedule_time;
 
-        return $this->callServer("campaignSchedule", $params);
+        return $this->callServer('campaignSchedule', $params);
     }
 
     /**
@@ -124,12 +114,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function campaignResume($cid)
+    public function campaignResume($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignResume", $params);
+        return $this->callServer('campaignResume', $params);
     }
 
     /**
@@ -143,12 +133,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function campaignPause($cid)
+    public function campaignPause($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignPause", $params);
+        return $this->callServer('campaignPause', $params);
     }
 
     /**
@@ -162,12 +152,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function campaignSendNow($cid)
+    public function campaignSendNow($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignSendNow", $params);
+        return $this->callServer('campaignSendNow', $params);
     }
 
     /**
@@ -178,19 +168,19 @@ class MGAPI
      *
      * @param string $cid         Kampaņas, kur vēlamies notestēt, ID
      * @param array  $test_emails Masīvs, kas satur epastus, uz kuriem nosūtīt vēstuli
-     * @param string $send_type   Nav obligāts. Ja vēlaties nosūtīt abus formātus, norādiet "html", ja tikai teksta, tad "plain"
+     * @param string $send_type   Nav obligāts. Ja vēlaties nosūtīt abus formātus, norādiet 'html', ja tikai teksta, tad 'plain'
      *
      * @return boolean true ja veiksmīgi
      * @throws \Exception
      */
-    function campaignSendTest($cid, $test_emails = [], $send_type = null)
+    public function campaignSendTest($cid, $test_emails = [], $send_type = null)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["test_emails"] = $test_emails;
-        $params["send_type"] = $send_type;
+        $params['cid'] = $cid;
+        $params['test_emails'] = $test_emails;
+        $params['send_type'] = $send_type;
 
-        return $this->callServer("campaignSendTest", $params);
+        return $this->callServer('campaignSendTest', $params);
     }
 
     /**
@@ -201,16 +191,16 @@ class MGAPI
      * @return array Masīvs, kas satur šablonus
      * @returnf integer id Šablona ID
      * @returnf string name Šablona nosaukums
-     * @returnf string layout Šablona izkārtojums - "basic", "left_column", "right_column" vai "postcard"
+     * @returnf string layout Šablona izkārtojums - 'basic', 'left_column', 'right_column' vai 'postcard'
      * @returnf string preview_image URL adrese līdz priekšskatījuma attēlam
      * @returnf array source Šablona HTML kods
      * @throws \Exception
      */
-    function campaignTemplates()
+    public function campaignTemplates()
     {
         $params = [];
 
-        return $this->callServer("campaignTemplates", $params);
+        return $this->callServer('campaignTemplates', $params);
     }
 
     /**
@@ -219,16 +209,16 @@ class MGAPI
      * @example mgapi_campaignCreate.php
      * @example xml-rpc_campaignCreate.php
      *
-     * @param string $type      Kampaņas veids: "html", "plain", "auto"
+     * @param string $type      Kampaņas veids: 'html', 'plain', 'auto'
      * @param array  $options   Masīvs ar kampaņas parametriem
      *                          string/array list_id Saraksta id, to var atrast r lists()
      *                          string subject Vēstules virsraksts
      *                          string from_email Epasts, uz kuru varēs nosūtīt atbildes epastu
      *                          string from_name Vārds, kas parādīsies pie nosūtītāja
      *                          string to_email Merge vērtība, kas parādīsies pie To: lauka (tas nav epasts)
-     *                          array tracking Nav obligāts. Statistikas parametru masīvs, tiek izmantotas šādas atslēgas: "opens", "html_clicks" un "text_clicks". Pēc noklusējuma tiek skaitīta atvēršana un HTML klikšķi
+     *                          array tracking Nav obligāts. Statistikas parametru masīvs, tiek izmantotas šādas atslēgas: 'opens', 'html_clicks' un 'text_clicks'. Pēc noklusējuma tiek skaitīta atvēršana un HTML klikšķi
      *                          string title Nav obligāts. Kampaņas nosaukums. Pēc noklusējuma tiek izmantots vēstules virsraksts
-     *                          array analytics Nav obligāts. Masīvs ar skaitītāju informāciju. Google gadījumā ir šāds pielietojums "google"=>"jūsu_google_analytics_atslēga". "jūsu_google_analytics_atslēga" tiks pievienota visiem linkiem, statistiku varēs apskatīties klienta Google Analytics kontā
+     *                          array analytics Nav obligāts. Masīvs ar skaitītāju informāciju. Google gadījumā ir šāds pielietojums 'google'=>'jūsu_google_analytics_atslēga'. 'jūsu_google_analytics_atslēga' tiks pievienota visiem linkiem, statistiku varēs apskatīties klienta Google Analytics kontā
      *                          boolean generate_text Nav obligāts. Ja nav norādīts plain teksts, tiks ģenerēts tekst no HTML. Pēc noklusējuma ir false
      *                          boolean auto_footer Nav obligāts. Iekļaut vai neiekļaut automātisko kājeni vēstules saturā. Šis ir pieejams lietotājie ar Pro paku. Pēc noklusējuma ir false
      *                          boolean inline_img Nav obligāts.
@@ -239,32 +229,32 @@ class MGAPI
      *                          boolean inline_img Nav obligāts. Izmantot vai nē inline bildes. Šis ir pieejams ar atbilstošu addonu. Pēc noklusējuma ir false
      *                          string ln Nav obligāts. Nosaka, kādā valodā būs kājene un galvene. Iespējamās vērtības: cn, dk, en, ee, fi, fr, de, it, jp, lv, lt, no, pl, pt, ru, es, se
      * @param array  $content   Masīvs, kas satur vēstules saturu. Struktūra:
-     *                          "html" HTML saturs
-     *                          "plain" saturs plain vēstulei
-     *                          "url" Adrese, no kuras importēt HTML tekstu. Ja netiek norādīts plain teksts, tad vajag ieslēgt generate_text, lai tiktu ģenerēts plain teksta vēstules saturs. Ja tiek norādīta šī vērtība, tad tiek pārrakstītas augstāk minētās vērtības
-     *                          "archive" Ar Base64 kodēts arhīva fails. Ja tiek norādīta šī vērtība, tad tiek pārrakstītas augstāk minētās vērtības
-     *                          "archive_type" Nav obligāts. Pieļaujamie arhīva formāti: zip, tar.gz, tar.bz2, tar, tgz, tbz . Ja nav norādīts, tad pēc noklusējuma tiks izmantots zip
+     *                          'html' HTML saturs
+     *                          'plain' saturs plain vēstulei
+     *                          'url' Adrese, no kuras importēt HTML tekstu. Ja netiek norādīts plain teksts, tad vajag ieslēgt generate_text, lai tiktu ģenerēts plain teksta vēstules saturs. Ja tiek norādīta šī vērtība, tad tiek pārrakstītas augstāk minētās vērtības
+     *                          'archive' Ar Base64 kodēts arhīva fails. Ja tiek norādīta šī vērtība, tad tiek pārrakstītas augstāk minētās vērtības
+     *                          'archive_type' Nav obligāts. Pieļaujamie arhīva formāti: zip, tar.gz, tar.bz2, tar, tgz, tbz . Ja nav norādīts, tad pēc noklusējuma tiks izmantots zip
      *                          integer template_id Nav obligāts. Lietotāja šablona id, nu kura tiks ģenerēts HTML saturs
      * @param array  $type_opts Nav obligāts -
      *                          Autoatbildētāja kampaņa, šis masīvs satur šādu informāciju:
-     *                          string offset-units Kāda vērtība no "day", "week", "month", "year". Obligāti jānorāda
+     *                          string offset-units Kāda vērtība no 'day', 'week', 'month', 'year'. Obligāti jānorāda
      *                          string offset-time Vērtība, kas ir lielāka par 0. Obligāti jānorāda
-     *                          string offset-dir Viena vērtība no "before" vai "after". Pēc noklusējuma "after"
-     *                          string event Nav obligāts. Izsūtīt pēc "signup" (parakstīšanās, pēc noklusējuma), "date" (datuma) vai "annual" (ikgadējs)
-     *                          string event-datemerge Nav obligāts. Merge lauks, kurš tiek ņemts vērā, kad izsūtīt. Šis ir nepieciešams, ja event ir norādīt "date" vai "annual"
+     *                          string offset-dir Viena vērtība no 'before' vai 'after'. Pēc noklusējuma 'after'
+     *                          string event Nav obligāts. Izsūtīt pēc 'signup' (parakstīšanās, pēc noklusējuma), 'date' (datuma) vai 'annual' (ikgadējs)
+     *                          string event-datemerge Nav obligāts. Merge lauks, kurš tiek ņemts vērā, kad izsūtīt. Šis ir nepieciešams, ja event ir norādīt 'date' vai 'annual'
      *
      * @return string Atgriež jaunās kampaņas ID
      * @throws \Exception
      */
-    function campaignCreate($type, $options, $content, $type_opts = null)
+    public function campaignCreate($type, $options, $content, $type_opts = null)
     {
         $params = [];
-        $params["type"] = $type;
-        $params["options"] = $options;
-        $params["content"] = $content;
-        $params["type_opts"] = $type_opts;
+        $params['type'] = $type;
+        $params['options'] = $options;
+        $params['content'] = $content;
+        $params['type_opts'] = $type_opts;
 
-        return $this->callServer("campaignCreate", $params);
+        return $this->callServer('campaignCreate', $params);
     }
 
     /**
@@ -277,20 +267,20 @@ class MGAPI
      * @example xml-rpc_campaignUpdate.php
      *
      * @param string $cid   Kampaņas, kuru vajag labot, ID
-     * @param string $name  Parametra nosaukums (skatīties pie campaignCreate() options lauku ). Iespējamie parametri: subject, from_email, utt. Papildus parametri ir content. Gadījumā, ja vajag mainīt "type_opts", kā "name" vajag norādīt, piemēram, "auto".
+     * @param string $name  Parametra nosaukums (skatīties pie campaignCreate() options lauku ). Iespējamie parametri: subject, from_email, utt. Papildus parametri ir content. Gadījumā, ja vajag mainīt 'type_opts', kā 'name' vajag norādīt, piemēram, 'auto'.
      * @param mixed  $value Iespējamās vērtības parametram ( skatīties campaignCreate() options lauku )
      *
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function campaignUpdate($cid, $name, $value)
+    public function campaignUpdate($cid, $name, $value)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["name"] = $name;
-        $params["value"] = $value;
+        $params['cid'] = $cid;
+        $params['name'] = $name;
+        $params['value'] = $value;
 
-        return $this->callServer("campaignUpdate", $params);
+        return $this->callServer('campaignUpdate', $params);
     }
 
     /**
@@ -304,12 +294,12 @@ class MGAPI
      * @return string Atgriežam jaunās kampaņas ID
      * @throws \Exception
      */
-    function campaignReplicate($cid)
+    public function campaignReplicate($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignReplicate", $params);
+        return $this->callServer('campaignReplicate', $params);
     }
 
     /**
@@ -323,12 +313,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function campaignDelete($cid)
+    public function campaignDelete($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignDelete", $params);
+        return $this->callServer('campaignDelete', $params);
     }
 
     /**
@@ -343,9 +333,9 @@ class MGAPI
      *                         string  status Nav obligāts. Var atrast kampaņu pēc statusa: sent, draft, paused, sending
      *                         string  type Nav obligāts. Kampaņas tips: plain, html
      *                         string  from_name Nav obligāts. Atlasa kampānu pēc nosūtītāja vārda
-     *                         string  from_email Nav obligāts. Atlasa kampaņas pēc "Reply-to" epasta
+     *                         string  from_email Nav obligāts. Atlasa kampaņas pēc 'Reply-to' epasta
      *                         string  title Nav obligāts. Atlasa pēc kampaņas nosaukuma
-     *                         string  subject Nav obligāts. Atlasa pēc vēstules virsraksta ("Subject")
+     *                         string  subject Nav obligāts. Atlasa pēc vēstules virsraksta ('Subject')
      *                         string  sendtime_start Nav obligāts. Atlasa vēstules, kas izsūtītas pēc šī datuma/laika. Formāts - YYYY-MM-DD HH:mm:ss (24hr)
      *                         string  sendtime_end Nav obligāts. Atlasa vēstules, kas izsūtītas pirms šī datuma/laika. Formāts - YYYY-MM-DD HH:mm:ss (24hr)
      * @param integer $start   Nav obligāts. Lapa, no kuras izvadīt datus. Pēc noklusējuma ir 0, kas atbilst pirmajai lapai
@@ -363,7 +353,7 @@ class MGAPI
      * @returnf string from_name Vārds, kas parādās From laukā
      * @returnf string from_email E-pasts, uz kuru saņēmējs var nosūtīt atbildi
      * @returnf string subject Vēstules virsraksts
-     * @returnf boolean to_email  Personalizēt "To:" lauku
+     * @returnf boolean to_email  Personalizēt 'To:' lauku
      * @returnf string archive_url Arhīva saite uz kampaņu
      * @returnf boolean analytics Integrēt vai neitegrēt Google Analytics
      * @returnf string analytcs_tag  Google Analytics nosaukums kampaņai
@@ -372,14 +362,14 @@ class MGAPI
      * @returnf boolean track_opens Skaitīt vai neskaitīt atvēršanu
      * @throws \Exception
      */
-    function campaigns($filters = [], $start = 0, $limit = 25)
+    public function campaigns($filters = [], $start = 0, $limit = 25)
     {
         $params = [];
-        $params["filters"] = $filters;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['filters'] = $filters;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaigns", $params);
+        return $this->callServer('campaigns', $params);
     }
 
     /**
@@ -408,12 +398,12 @@ class MGAPI
      * @returnf integer emails_sent Kopējais skaits, cik vēstules ir izsūtītas
      * @throws \Exception
      */
-    function campaignStats($cid)
+    public function campaignStats($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignStats", $params);
+        return $this->callServer('campaignStats', $params);
     }
 
     /**
@@ -431,12 +421,12 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function campaignClickStats($cid)
+    public function campaignClickStats($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignClickStats", $params);
+        return $this->callServer('campaignClickStats', $params);
     }
 
     /**
@@ -459,15 +449,15 @@ class MGAPI
      * @returnf string browser
      * @throws \Exception
      */
-    function campaignClickStatsDetails($cid, $filters = [], $start = 0, $limit = 25)
+    public function campaignClickStatsDetails($cid, $filters = [], $start = 0, $limit = 25)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["filters"] = $filters;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['filters'] = $filters;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignClickStatsDetails", $params);
+        return $this->callServer('campaignClickStatsDetails', $params);
     }
 
     /**
@@ -494,12 +484,12 @@ class MGAPI
      * @returnf integer unsubs_pct Procentuāli, cik daudz no šī domēna ir atrakstījušies
      * @throws \Exception
      */
-    function campaignEmailDomainPerformance($cid)
+    public function campaignEmailDomainPerformance($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignEmailDomainPerformance", $params);
+        return $this->callServer('campaignEmailDomainPerformance', $params);
     }
 
     /**
@@ -515,14 +505,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignHardBounces($cid, $start = 0, $limit = 1000)
+    public function campaignHardBounces($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignHardBounces", $params);
+        return $this->callServer('campaignHardBounces', $params);
     }
 
     /**
@@ -538,14 +528,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignSoftBounces($cid, $start = 0, $limit = 1000)
+    public function campaignSoftBounces($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignSoftBounces", $params);
+        return $this->callServer('campaignSoftBounces', $params);
     }
 
     /**
@@ -561,14 +551,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignBlockedBounces($cid, $start = 0, $limit = 1000)
+    public function campaignBlockedBounces($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignBlockedBounces", $params);
+        return $this->callServer('campaignBlockedBounces', $params);
     }
 
     /**
@@ -584,14 +574,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignTemporaryBounces($cid, $start = 0, $limit = 1000)
+    public function campaignTemporaryBounces($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignTemporaryBounces", $params);
+        return $this->callServer('campaignTemporaryBounces', $params);
     }
 
     /**
@@ -607,14 +597,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignGenericBounces($cid, $start = 0, $limit = 1000)
+    public function campaignGenericBounces($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignGenericBounces", $params);
+        return $this->callServer('campaignGenericBounces', $params);
     }
 
     /**
@@ -630,14 +620,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignUnsubscribes($cid, $start = 0, $limit = 1000)
+    public function campaignUnsubscribes($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignUnsubscribes", $params);
+        return $this->callServer('campaignUnsubscribes', $params);
     }
 
     /**
@@ -654,12 +644,12 @@ class MGAPI
      * @returnf int opens Skaits, cik daudz atvērts
      * @throws \Exception
      */
-    function campaignGeoOpens($cid)
+    public function campaignGeoOpens($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("campaignGeoOpens", $params);
+        return $this->callServer('campaignGeoOpens', $params);
     }
 
     /**
@@ -677,13 +667,13 @@ class MGAPI
      * @returnf int opens Skaits, cik daudz atvērts
      * @throws \Exception
      */
-    function campaignGeoOpensByCountry($cid, $code)
+    public function campaignGeoOpensByCountry($cid, $code)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["code"] = $code;
+        $params['cid'] = $cid;
+        $params['code'] = $code;
 
-        return $this->callServer("campaignGeoOpensByCountry", $params);
+        return $this->callServer('campaignGeoOpensByCountry', $params);
     }
 
     /**
@@ -699,14 +689,14 @@ class MGAPI
      * @return array Epastu saraksts
      * @throws \Exception
      */
-    function campaignForwardStats($cid, $start = 0, $limit = 1000)
+    public function campaignForwardStats($cid, $start = 0, $limit = 1000)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignForwardStats", $params);
+        return $this->callServer('campaignForwardStats', $params);
     }
 
     /**
@@ -725,14 +715,14 @@ class MGAPI
      * @returnf string message Atsviestēs vēstules saturs
      * @throws \Exception
      */
-    function campaignBounceMessages($cid, $start = 0, $limit = 25)
+    public function campaignBounceMessages($cid, $start = 0, $limit = 25)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignBounceMessages", $params);
+        return $this->callServer('campaignBounceMessages', $params);
     }
 
     /**
@@ -752,14 +742,14 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function campaignOpened($cid, $start = 0, $limit = 25)
+    public function campaignOpened($cid, $start = 0, $limit = 25)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignOpened", $params);
+        return $this->callServer('campaignOpened', $params);
     }
 
     /**
@@ -777,14 +767,14 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function campaignNotOpened($cid, $start = 0, $limit = 25)
+    public function campaignNotOpened($cid, $start = 0, $limit = 25)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("campaignNotOpened", $params);
+        return $this->callServer('campaignNotOpened', $params);
     }
 
     /**
@@ -805,13 +795,13 @@ class MGAPI
      * @return string Atgriež jaunā saraksta ID
      * @throws \Exception
      */
-    function listCreate($title, $options = null)
+    public function listCreate($title, $options = null)
     {
         $params = [];
-        $params["title"] = $title;
-        $params["options"] = $options;
+        $params['title'] = $title;
+        $params['options'] = $options;
 
-        return $this->callServer("listCreate", $params);
+        return $this->callServer('listCreate', $params);
     }
 
     /**
@@ -827,14 +817,14 @@ class MGAPI
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function listUpdate($id, $name, $value)
+    public function listUpdate($id, $name, $value)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["name"] = $name;
-        $params["value"] = $value;
+        $params['id'] = $id;
+        $params['name'] = $name;
+        $params['value'] = $value;
 
-        return $this->callServer("listUpdate", $params);
+        return $this->callServer('listUpdate', $params);
     }
 
     /**
@@ -848,12 +838,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function listDelete($id)
+    public function listDelete($id)
     {
         $params = [];
-        $params["id"] = $id;
+        $params['id'] = $id;
 
-        return $this->callServer("listDelete", $params);
+        return $this->callServer('listDelete', $params);
     }
 
     /**
@@ -878,13 +868,13 @@ class MGAPI
      * @returnf string default_language Noklusēja valoda saraksta formām
      * @throws \Exception
      */
-    function lists($start = 0, $limit = 1000)
+    public function lists($start = 0, $limit = 1000)
     {
         $params = [];
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("lists", $params);
+        return $this->callServer('lists', $params);
     }
 
     /**
@@ -905,12 +895,12 @@ class MGAPI
      * @returnf string tag Merge tags, kas tiek izmantots formās, listSubscribe() un listUpdateMember()
      * @throws \Exception
      */
-    function listMergeVars($id)
+    public function listMergeVars($id)
     {
         $params = [];
-        $params["id"] = $id;
+        $params['id'] = $id;
 
-        return $this->callServer("listMergeVars", $params);
+        return $this->callServer('listMergeVars', $params);
     }
 
     /**
@@ -931,15 +921,15 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listMergeVarAdd($id, $tag, $name, $options = [])
+    public function listMergeVarAdd($id, $tag, $name, $options = [])
     {
         $params = [];
-        $params["id"] = $id;
-        $params["tag"] = $tag;
-        $params["name"] = $name;
-        $params["options"] = $options;
+        $params['id'] = $id;
+        $params['tag'] = $tag;
+        $params['name'] = $name;
+        $params['options'] = $options;
 
-        return $this->callServer("listMergeVarAdd", $params);
+        return $this->callServer('listMergeVarAdd', $params);
     }
 
     /**
@@ -955,14 +945,14 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listMergeVarUpdate($id, $tag, $options)
+    public function listMergeVarUpdate($id, $tag, $options)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["tag"] = $tag;
-        $params["options"] = $options;
+        $params['id'] = $id;
+        $params['tag'] = $tag;
+        $params['options'] = $options;
 
-        return $this->callServer("listMergeVarUpdate", $params);
+        return $this->callServer('listMergeVarUpdate', $params);
     }
 
     /**
@@ -977,13 +967,13 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listMergeVarDel($id, $tag)
+    public function listMergeVarDel($id, $tag)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["tag"] = $tag;
+        $params['id'] = $id;
+        $params['tag'] = $tag;
 
-        return $this->callServer("listMergeVarDel", $params);
+        return $this->callServer('listMergeVarDel', $params);
     }
 
     /**
@@ -1003,7 +993,7 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listSubscribe(
+    public function listSubscribe(
         $id,
         $email_address,
         $merge_vars,
@@ -1013,15 +1003,15 @@ class MGAPI
         $send_welcome = false
     ) {
         $params = [];
-        $params["id"] = $id;
-        $params["email_address"] = $email_address;
-        $params["merge_vars"] = $merge_vars;
-        $params["email_type"] = $email_type;
-        $params["double_optin"] = $double_optin;
-        $params["update_existing"] = $update_existing;
-        $params["send_welcome"] = $send_welcome;
+        $params['id'] = $id;
+        $params['email_address'] = $email_address;
+        $params['merge_vars'] = $merge_vars;
+        $params['email_type'] = $email_type;
+        $params['double_optin'] = $double_optin;
+        $params['update_existing'] = $update_existing;
+        $params['send_welcome'] = $send_welcome;
 
-        return $this->callServer("listSubscribe", $params);
+        return $this->callServer('listSubscribe', $params);
     }
 
     /**
@@ -1038,15 +1028,15 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listSubscribeSMS($id, $phone, $merge_vars, $update_existing = false)
+    public function listSubscribeSMS($id, $phone, $merge_vars, $update_existing = false)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["phone"] = $phone;
-        $params["merge_vars"] = $merge_vars;
-        $params["update_existing"] = $update_existing;
+        $params['id'] = $id;
+        $params['phone'] = $phone;
+        $params['merge_vars'] = $merge_vars;
+        $params['update_existing'] = $update_existing;
 
-        return $this->callServer("listSubscribeSMS", $params);
+        return $this->callServer('listSubscribeSMS', $params);
     }
 
     /**
@@ -1056,7 +1046,7 @@ class MGAPI
      * @example xml-rpc_listUnsubscribe.php
      *
      * @param string  $id            Saraksta ID. Saraksta ID var atrast ar lists() metodi
-     * @param string  $email_address Epasta adrese vai "id", ko var atrast ar "listMemberInfo" metodi
+     * @param string  $email_address Epasta adrese vai 'id', ko var atrast ar 'listMemberInfo' metodi
      * @param boolean $delete_member Dzest vai nedzest lietotaju no saraksta. Pec noklusejuma false
      * @param boolean $send_goodbye  Nosutit vai nesutit pazinojumu epasta lietotajam. Pec noklusejuma true
      * @param boolean $send_notify   Nosutit vai nesutit pazinojumu uz epastu, kas noradits saraksta opcijas. Pec noklusejuma false
@@ -1064,16 +1054,16 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listUnsubscribe($id, $email_address, $delete_member = false, $send_goodbye = true, $send_notify = true)
+    public function listUnsubscribe($id, $email_address, $delete_member = false, $send_goodbye = true, $send_notify = true)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["email_address"] = $email_address;
-        $params["delete_member"] = $delete_member;
-        $params["send_goodbye"] = $send_goodbye;
-        $params["send_notify"] = $send_notify;
+        $params['id'] = $id;
+        $params['email_address'] = $email_address;
+        $params['delete_member'] = $delete_member;
+        $params['send_goodbye'] = $send_goodbye;
+        $params['send_notify'] = $send_notify;
 
-        return $this->callServer("listUnsubscribe", $params);
+        return $this->callServer('listUnsubscribe', $params);
     }
 
     /**
@@ -1083,22 +1073,22 @@ class MGAPI
      * @example xml-rpc_listUnsubscribe.php
      *
      * @param string  $id            Saraksta ID. Saraksta ID var atrast ar lists() metodi
-     * @param string  $phone         Phone vai "id", ko var atrast ar "listMemberInfo" metodi
+     * @param string  $phone         Phone vai 'id', ko var atrast ar 'listMemberInfo' metodi
      * @param boolean $delete_member Dzest vai nedzest lietotaju no saraksta. Pec noklusejuma false
      * @param boolean $send_notify   Nosutit vai nesutit pazinojumu uz epastu, kas noradits saraksta opcijas. Pec noklusejuma false
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listUnsubscribeSMS($id, $phone, $delete_member = false, $send_notify = true)
+    public function listUnsubscribeSMS($id, $phone, $delete_member = false, $send_notify = true)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["phone"] = $phone;
-        $params["delete_member"] = $delete_member;
-        $params["send_notify"] = $send_notify;
+        $params['id'] = $id;
+        $params['phone'] = $phone;
+        $params['delete_member'] = $delete_member;
+        $params['send_notify'] = $send_notify;
 
-        return $this->callServer("listUnsubscribeSMS", $params);
+        return $this->callServer('listUnsubscribeSMS', $params);
     }
 
     /**
@@ -1108,22 +1098,22 @@ class MGAPI
      * @example xml-rpc_listUpdateMember.php
      *
      * @param string $id            Saraksta ID. Saraksta ID var atrast ar lists() metodi
-     * @param string $email_address Epasta adrese vai "id", ko var atrast ar "listMemberInfo" metodi
-     * @param array  $merge_vars    Masivs ar  MERGE laukiem. MERGE laukus var apskatities pie metodes "listSubscribe"
-     * @param string $email_type    Epasta tips: "html" vai "plain". Nav obligats
+     * @param string $email_address Epasta adrese vai 'id', ko var atrast ar 'listMemberInfo' metodi
+     * @param array  $merge_vars    Masivs ar  MERGE laukiem. MERGE laukus var apskatities pie metodes 'listSubscribe'
+     * @param string $email_type    Epasta tips: 'html' vai 'plain'. Nav obligats
      *
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listUpdateMember($id, $email_address, $merge_vars, $email_type = '')
+    public function listUpdateMember($id, $email_address, $merge_vars, $email_type = '')
     {
         $params = [];
-        $params["id"] = $id;
-        $params["email_address"] = $email_address;
-        $params["merge_vars"] = $merge_vars;
-        $params["email_type"] = $email_type;
+        $params['id'] = $id;
+        $params['email_address'] = $email_address;
+        $params['merge_vars'] = $merge_vars;
+        $params['email_type'] = $email_type;
 
-        return $this->callServer("listUpdateMember", $params);
+        return $this->callServer('listUpdateMember', $params);
     }
 
     /**
@@ -1133,25 +1123,25 @@ class MGAPI
      * @example xml-rpc_listBatchSubscribe.php
      *
      * @param string  $id              Saraksta ID. Saraksta ID var atrast ar lists() metodi
-     * @param array   $batch           Masivs, kas satur epastu datus. Epasta dati ir masivs ar ada atslegam: "EMAIL" epasta adresei, "EMAIL_TYPE" epasta tips (html vai plain)
+     * @param array   $batch           Masivs, kas satur epastu datus. Epasta dati ir masivs ar ada atslegam: 'EMAIL' epasta adresei, 'EMAIL_TYPE' epasta tips (html vai plain)
      * @param boolean $double_optin    Vai sutit apstiprinajuma vestuli. Pec noklusejuma true
      * @param boolean $update_existing Vai atjaunot eksistejoos epastus. Pec noklusejuma false (atgriezis kludas pazinojumu)
      *
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'email'
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function listBatchSubscribe($id, $batch, $double_optin = true, $update_existing = false)
+    public function listBatchSubscribe($id, $batch, $double_optin = true, $update_existing = false)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["batch"] = $batch;
-        $params["double_optin"] = $double_optin;
-        $params["update_existing"] = $update_existing;
+        $params['id'] = $id;
+        $params['batch'] = $batch;
+        $params['double_optin'] = $double_optin;
+        $params['update_existing'] = $update_existing;
 
-        return $this->callServer("listBatchSubscribe", $params);
+        return $this->callServer('listBatchSubscribe', $params);
     }
 
     /**
@@ -1161,25 +1151,25 @@ class MGAPI
      * @example xml-rpc_listBatchSubscribe.php
      *
      * @param string  $id              Saraksta ID. Saraksta ID var atrast ar lists() metodi
-     * @param array   $batch           Masivs, kas satur epastu datus. Epasta dati ir masivs ar ada atslegam: "SMS" epasta adresei
+     * @param array   $batch           Masivs, kas satur epastu datus. Epasta dati ir masivs ar ada atslegam: 'SMS' epasta adresei
      * @param bool    $doubleOptIn
      * @param boolean $update_existing Vai atjaunot eksistejoos epastus. Pec noklusejuma false (atgriezis kludas pazinojumu)
      *
      * @return array|bool|mixed|string
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "phone"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'phone'
      * @throws \Exception
      */
-    function listBatchSubscribeSMS($id, $batch, $doubleOptIn = false, $update_existing = false)
+    public function listBatchSubscribeSMS($id, $batch, $doubleOptIn = false, $update_existing = false)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["batch"] = $batch;
-        $params["double_optin"] = $doubleOptIn;
-        $params["update_existing"] = $update_existing;
+        $params['id'] = $id;
+        $params['batch'] = $batch;
+        $params['double_optin'] = $doubleOptIn;
+        $params['update_existing'] = $update_existing;
 
-        return $this->callServer("listBatchSubscribeSMS", $params);
+        return $this->callServer('listBatchSubscribeSMS', $params);
     }
 
     /**
@@ -1196,20 +1186,20 @@ class MGAPI
      *
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'email'
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function listBatchUnsubscribe($id, $emails, $delete_member = false, $send_goodbye = true, $send_notify = false)
+    public function listBatchUnsubscribe($id, $emails, $delete_member = false, $send_goodbye = true, $send_notify = false)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["emails"] = $emails;
-        $params["delete_member"] = $delete_member;
-        $params["send_goodbye"] = $send_goodbye;
-        $params["send_notify"] = $send_notify;
+        $params['id'] = $id;
+        $params['emails'] = $emails;
+        $params['delete_member'] = $delete_member;
+        $params['send_goodbye'] = $send_goodbye;
+        $params['send_notify'] = $send_notify;
 
-        return $this->callServer("listBatchUnsubscribe", $params);
+        return $this->callServer('listBatchUnsubscribe', $params);
     }
 
     /**
@@ -1225,19 +1215,19 @@ class MGAPI
      *
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'email'
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function listBatchUnsubscribeSMS($id, $phones, $delete_member = false, $send_notify = false)
+    public function listBatchUnsubscribeSMS($id, $phones, $delete_member = false, $send_notify = false)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["phones"] = $phones;
-        $params["delete_member"] = $delete_member;
-        $params["send_notify"] = $send_notify;
+        $params['id'] = $id;
+        $params['phones'] = $phones;
+        $params['delete_member'] = $delete_member;
+        $params['send_notify'] = $send_notify;
 
-        return $this->callServer("listBatchUnsubscribeSMS", $params);
+        return $this->callServer('listBatchUnsubscribeSMS', $params);
     }
 
     /**
@@ -1256,15 +1246,15 @@ class MGAPI
      * @returnf date timestamp Peivienoanas datums
      * @throws \Exception
      */
-    function listMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
+    public function listMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["status"] = $status;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['id'] = $id;
+        $params['status'] = $status;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("listMembers", $params);
+        return $this->callServer('listMembers', $params);
     }
 
     /**
@@ -1278,17 +1268,17 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function listMembersByMerge($id, $merge_var, $merge_value = '', $status = 'subscribed', $start = 0, $limit = 100)
+    public function listMembersByMerge($id, $merge_var, $merge_value = '', $status = 'subscribed', $start = 0, $limit = 100)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["merge_var"] = $merge_var;
-        $params["merge_value"] = $merge_value;
-        $params["status"] = $status;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['id'] = $id;
+        $params['merge_var'] = $merge_var;
+        $params['merge_value'] = $merge_value;
+        $params['status'] = $status;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("listMembersByMerge", $params);
+        return $this->callServer('listMembersByMerge', $params);
     }
 
     /**
@@ -1311,13 +1301,13 @@ class MGAPI
      * @returnf date timestamp Laiks, kad tika pievienots sarakstam
      * @throws \Exception
      */
-    function listMemberInfo($id, $email_address)
+    public function listMemberInfo($id, $email_address)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["email_address"] = $email_address;
+        $params['id'] = $id;
+        $params['email_address'] = $email_address;
 
-        return $this->callServer("listMemberInfo", $params);
+        return $this->callServer('listMemberInfo', $params);
     }
 
     /**
@@ -1329,7 +1319,7 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function listMemberDelete($id, $email_address)
+    public function listMemberDelete($id, $email_address)
     {
         $params = [];
         $params['id'] = $id;
@@ -1359,17 +1349,17 @@ class MGAPI
      * @returnf integer imports Number of how many emails of new recipients have been added during the current period of time
      * @throws \Exception
      */
-    function listGrowthHistory($id, $split_by = 'month', $start_date = null, $end_date = null, $start = 0, $limit = 25)
+    public function listGrowthHistory($id, $split_by = 'month', $start_date = null, $end_date = null, $start = 0, $limit = 25)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["split_by"] = $split_by;
-        $params["start_date"] = $start_date;
-        $params["end_date"] = $end_date;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['id'] = $id;
+        $params['split_by'] = $split_by;
+        $params['start_date'] = $start_date;
+        $params['end_date'] = $end_date;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("listGrowthHistory", $params);
+        return $this->callServer('listGrowthHistory', $params);
     }
 
     /**
@@ -1388,12 +1378,12 @@ class MGAPI
      * @returnf integer member_count Lietotāju skaits sarakstā
      * @throws \Exception
      */
-    function listSegments($id)
+    public function listSegments($id)
     {
         $params = [];
-        $params["id"] = $id;
+        $params['id'] = $id;
 
-        return $this->callServer("listSegments", $params);
+        return $this->callServer('listSegments', $params);
     }
 
     /**
@@ -1413,16 +1403,16 @@ class MGAPI
      * @return string Atgriež jaunā segmenta ID
      * @throws \Exception
      */
-    function listSegmentCreate($list, $title, $match, $filter, $auto_update = false)
+    public function listSegmentCreate($list, $title, $match, $filter, $auto_update = false)
     {
         $params = [];
-        $params["list"] = $list;
-        $params["title"] = $title;
-        $params["match"] = $match;
-        $params["filter"] = $filter;
-        $params["auto_update"] = $auto_update;
+        $params['list'] = $list;
+        $params['title'] = $title;
+        $params['match'] = $match;
+        $params['filter'] = $filter;
+        $params['auto_update'] = $auto_update;
 
-        return $this->callServer("listSegmentCreate", $params);
+        return $this->callServer('listSegmentCreate', $params);
     }
 
     /**
@@ -1437,14 +1427,14 @@ class MGAPI
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function listSegmentUpdate($sid, $name, $value)
+    public function listSegmentUpdate($sid, $name, $value)
     {
         $params = [];
-        $params["sid"] = $sid;
-        $params["name"] = $name;
-        $params["value"] = $value;
+        $params['sid'] = $sid;
+        $params['name'] = $name;
+        $params['value'] = $value;
 
-        return $this->callServer("listSegmentUpdate", $params);
+        return $this->callServer('listSegmentUpdate', $params);
     }
 
     /**
@@ -1457,12 +1447,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function listSegmentDelete($sid)
+    public function listSegmentDelete($sid)
     {
         $params = [];
-        $params["sid"] = $sid;
+        $params['sid'] = $sid;
 
-        return $this->callServer("listSegmentDelete", $params);
+        return $this->callServer('listSegmentDelete', $params);
     }
 
     /**
@@ -1483,15 +1473,15 @@ class MGAPI
      * @returnf date timestamp Peivienoanas datums
      * @throws \Exception
      */
-    function listSegmentMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
+    public function listSegmentMembers($id, $status = 'subscribed', $start = 0, $limit = 100)
     {
         $params = [];
-        $params["id"] = $id;
-        $params["status"] = $status;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['id'] = $id;
+        $params['status'] = $status;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("listSegmentMembers", $params);
+        return $this->callServer('listSegmentMembers', $params);
     }
 
     /**
@@ -1504,12 +1494,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function smsCampaignUnschedule($cid)
+    public function smsCampaignUnschedule($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignUnschedule", $params);
+        return $this->callServer('smsCampaignUnschedule', $params);
     }
 
     /**
@@ -1523,13 +1513,13 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function smsCampaignSchedule($cid, $schedule_time)
+    public function smsCampaignSchedule($cid, $schedule_time)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["schedule_time"] = $schedule_time;
+        $params['cid'] = $cid;
+        $params['schedule_time'] = $schedule_time;
 
-        return $this->callServer("smsCampaignSchedule", $params);
+        return $this->callServer('smsCampaignSchedule', $params);
     }
 
     /**
@@ -1542,12 +1532,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi
      * @throws \Exception
      */
-    function smsCampaignSendNow($cid)
+    public function smsCampaignSendNow($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignSendNow", $params);
+        return $this->callServer('smsCampaignSendNow', $params);
     }
 
     /**
@@ -1559,11 +1549,11 @@ class MGAPI
      * @returnf string source Šablona teksts
      * @throws \Exception
      */
-    function smsCampaignTemplates()
+    public function smsCampaignTemplates()
     {
         $params = [];
 
-        return $this->callServer("smsCampaignTemplates", $params);
+        return $this->callServer('smsCampaignTemplates', $params);
     }
 
     /**
@@ -1577,9 +1567,9 @@ class MGAPI
      *                       string list_id Saraksta id, to var atrast ar lists()
      *                       integer segment_id Nav obligāts. Segmenta ID, to var atrast ar segments()
      *                       string merge SMS lauka nosaukums, piemēram, MERGE10, SMS
-     *                       array tracking Nav obligāts. Statistikas parametru masīvs, tiek izmantotas šādas atslēgas: "clicks".
+     *                       array tracking Nav obligāts. Statistikas parametru masīvs, tiek izmantotas šādas atslēgas: 'clicks'.
      *                       string title Nav obligāts. Kampaņas nosaukums.
-     *                       array analytics Nav obligāts. Masīvs ar skaitītāju informāciju. Google gadījumā ir šāds pielietojums "google"=>"jūsu_google_analytics_atslēga". "jūsu_google_analytics_atslēga" tiks pievienota visiem linkiem, statistiku varēs apskatīties klienta Google Analytics kontā
+     *                       array analytics Nav obligāts. Masīvs ar skaitītāju informāciju. Google gadījumā ir šāds pielietojums 'google'=>'jūsu_google_analytics_atslēga'. 'jūsu_google_analytics_atslēga' tiks pievienota visiem linkiem, statistiku varēs apskatīties klienta Google Analytics kontā
      *                       boolean unicode Nav obligāts. Nosaka, vai izsūtīt kampaņu unikodā. Lai speciālie simboli un burit rādītos SMS kampaņa, šim ir jābūt true. Pēc noklusējuma ir false
      *                       boolean concatenate Nav obligāts. Nosaka, vai izsūtīt vairākas īsziņas, ja teksts ir par garu. Pēc noklusējuma ir false
      * @param array $content Masīvs, kas satur vēstules saturu. Struktūra:
@@ -1589,13 +1579,13 @@ class MGAPI
      * @return string Atgriež jaunās SMS kampaņas ID
      * @throws \Exception
      */
-    function smsCampaignCreate($options, $content)
+    public function smsCampaignCreate($options, $content)
     {
         $params = [];
-        $params["options"] = $options;
-        $params["content"] = $content;
+        $params['options'] = $options;
+        $params['content'] = $content;
 
-        return $this->callServer("smsCampaignCreate", $params);
+        return $this->callServer('smsCampaignCreate', $params);
     }
 
     /**
@@ -1613,14 +1603,14 @@ class MGAPI
      * @return boolean true, ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function smsCampaignUpdate($cid, $name, $value)
+    public function smsCampaignUpdate($cid, $name, $value)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["name"] = $name;
-        $params["value"] = $value;
+        $params['cid'] = $cid;
+        $params['name'] = $name;
+        $params['value'] = $value;
 
-        return $this->callServer("smsCampaignUpdate", $params);
+        return $this->callServer('smsCampaignUpdate', $params);
     }
 
     /**
@@ -1633,12 +1623,12 @@ class MGAPI
      * @return string Atgriežam jaunās SMS kampaņas ID
      * @throws \Exception
      */
-    function smsCampaignReplicate($cid)
+    public function smsCampaignReplicate($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignReplicate", $params);
+        return $this->callServer('smsCampaignReplicate', $params);
     }
 
     /**
@@ -1651,12 +1641,12 @@ class MGAPI
      * @return boolean true ja ir veiksmīgi, pretējā gadījumā atgriež kļūdas paziņojumu
      * @throws \Exception
      */
-    function smsCampaignDelete($cid)
+    public function smsCampaignDelete($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignDelete", $params);
+        return $this->callServer('smsCampaignDelete', $params);
     }
 
     /**
@@ -1691,14 +1681,14 @@ class MGAPI
      * @returnf boolean concatenate Sadalīt vai nesadalīt vairākās īsziņās garāku īsziņu
      * @throws \Exception
      */
-    function smsCampaigns($filters = [], $start = 0, $limit = 25)
+    public function smsCampaigns($filters = [], $start = 0, $limit = 25)
     {
         $params = [];
-        $params["filters"] = $filters;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['filters'] = $filters;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("smsCampaigns", $params);
+        return $this->callServer('smsCampaigns', $params);
     }
 
     /**
@@ -1722,12 +1712,12 @@ class MGAPI
      * @returnf integer sms_sent Kopējais skaits, cik vēstules ir izsūtītas
      * @throws \Exception
      */
-    function smsCampaignStats($cid)
+    public function smsCampaignStats($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignStats", $params);
+        return $this->callServer('smsCampaignStats', $params);
     }
 
     /**
@@ -1742,12 +1732,12 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function smsCampaignClickStats($cid)
+    public function smsCampaignClickStats($cid)
     {
         $params = [];
-        $params["cid"] = $cid;
+        $params['cid'] = $cid;
 
-        return $this->callServer("smsCampaignClickStats", $params);
+        return $this->callServer('smsCampaignClickStats', $params);
     }
 
     /**
@@ -1764,14 +1754,14 @@ class MGAPI
      * @returnf string reason Iemesls, kāpēc netika piegādāts
      * @throws \Exception
      */
-    function smsCampaignBounces($cid, $start = 0, $limit = 25)
+    public function smsCampaignBounces($cid, $start = 0, $limit = 25)
     {
         $params = [];
-        $params["cid"] = $cid;
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['cid'] = $cid;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("smsCampaignBounces", $params);
+        return $this->callServer('smsCampaignBounces', $params);
     }
 
     /**
@@ -1790,17 +1780,17 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function smsSenderIdRegister($sender, $phone, $company, $fullName, $companyPosition, $comments = '')
+    public function smsSenderIdRegister($sender, $phone, $company, $fullName, $companyPosition, $comments = '')
     {
         $params = [];
-        $params["sender"] = $sender;
-        $params["phone"] = $phone;
-        $params["company"] = $company;
-        $params["fullname"] = $fullName;
-        $params["companyposition"] = $companyPosition;
-        $params["comments"] = $comments;
+        $params['sender'] = $sender;
+        $params['phone'] = $phone;
+        $params['company'] = $company;
+        $params['fullname'] = $fullName;
+        $params['companyposition'] = $companyPosition;
+        $params['comments'] = $comments;
 
-        return $this->callServer("smsSenderIdRegister", $params);
+        return $this->callServer('smsSenderIdRegister', $params);
     }
 
     /**
@@ -1813,12 +1803,12 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function suppressedListSubscribe($email_address)
+    public function suppressedListSubscribe($email_address)
     {
         $params = [];
-        $params["email_address"] = $email_address;
+        $params['email_address'] = $email_address;
 
-        return $this->callServer("suppressedListSubscribe", $params);
+        return $this->callServer('suppressedListSubscribe', $params);
     }
 
     /**
@@ -1831,12 +1821,12 @@ class MGAPI
      * @return boolean true ja ir izdevies, false ja nav izdevies
      * @throws \Exception
      */
-    function suppressedListUnsubscribe($email_address)
+    public function suppressedListUnsubscribe($email_address)
     {
         $params = [];
-        $params["email_address"] = $email_address;
+        $params['email_address'] = $email_address;
 
-        return $this->callServer("suppressedListUnsubscribe", $params);
+        return $this->callServer('suppressedListUnsubscribe', $params);
     }
 
     /**
@@ -1848,16 +1838,16 @@ class MGAPI
      *
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'email'
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function suppressedListBatchSubscribe($batch)
+    public function suppressedListBatchSubscribe($batch)
     {
         $params = [];
-        $params["batch"] = $batch;
+        $params['batch'] = $batch;
 
-        return $this->callServer("suppressedListBatchSubscribe", $params);
+        return $this->callServer('suppressedListBatchSubscribe', $params);
     }
 
     /**
@@ -1869,16 +1859,16 @@ class MGAPI
      *
      * @returnf integer success_count Skaits, cik izdevas
      * @returnf integer error_count Skaits, cik neizdevas
-     * @returnf array errors Masivs ar kludas pazinojumiem. Satur "code", "message", un "email"
+     * @returnf array errors Masivs ar kludas pazinojumiem. Satur 'code', 'message', un 'email'
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function suppressedListBatchUnsubscribe($emails)
+    public function suppressedListBatchUnsubscribe($emails)
     {
         $params = [];
-        $params["emails"] = $emails;
+        $params['emails'] = $emails;
 
-        return $this->callServer("suppressedListBatchUnsubscribe", $params);
+        return $this->callServer('suppressedListBatchUnsubscribe', $params);
     }
 
     /**
@@ -1894,13 +1884,13 @@ class MGAPI
      * @returnf date timestamp Pievienošanas datums
      * @throws \Exception
      */
-    function suppressedListMembers($start = 0, $limit = 100)
+    public function suppressedListMembers($start = 0, $limit = 100)
     {
         $params = [];
-        $params["start"] = $start;
-        $params["limit"] = $limit;
+        $params['start'] = $start;
+        $params['limit'] = $limit;
 
-        return $this->callServer("suppressedListMembers", $params);
+        return $this->callServer('suppressedListMembers', $params);
     }
 
     /**
@@ -1921,11 +1911,11 @@ class MGAPI
      * @returnf array orders Masivs, kas satur informaciju par samaksatajiem rekiniem: rekina numurs, plans, cena, valuta, izrakstianas datums, pakas deriguma termin
      * @throws \Exception
      */
-    function getAccountDetails()
+    public function getAccountDetails()
     {
         $params = [];
 
-        return $this->callServer("getAccountDetails", $params);
+        return $this->callServer('getAccountDetails', $params);
     }
 
     /**
@@ -1939,12 +1929,12 @@ class MGAPI
      * @return array an array Masivs, kas satur sarakstu ID
      * @throws \Exception
      */
-    function listsForEmail($email_address)
+    public function listsForEmail($email_address)
     {
         $params = [];
-        $params["email_address"] = $email_address;
+        $params['email_address'] = $email_address;
 
-        return $this->callServer("listsForEmail", $params);
+        return $this->callServer('listsForEmail', $params);
     }
 
     /**
@@ -1963,14 +1953,14 @@ class MGAPI
      * @returnf string expired_at Datums, kad ta tika atzimeta, ka neaktiva
      * @throws \Exception
      */
-    function apikeys($username, $password, $expired = false)
+    public function apikeys($username, $password, $expired = false)
     {
         $params = [];
-        $params["username"] = $username;
-        $params["password"] = $password;
-        $params["expired"] = $expired;
+        $params['username'] = $username;
+        $params['password'] = $password;
+        $params['expired'] = $expired;
 
-        return $this->callServer("apikeys", $params);
+        return $this->callServer('apikeys', $params);
     }
 
     /**
@@ -1985,13 +1975,13 @@ class MGAPI
      * @return string atgrie˛ jaunu API atslegu
      * @throws \Exception
      */
-    function apikeyAdd($username, $password)
+    public function apikeyAdd($username, $password)
     {
         $params = [];
-        $params["username"] = $username;
-        $params["password"] = $password;
+        $params['username'] = $username;
+        $params['password'] = $password;
 
-        return $this->callServer("apikeyAdd", $params);
+        return $this->callServer('apikeyAdd', $params);
     }
 
     /**
@@ -2006,13 +1996,13 @@ class MGAPI
      * @return boolean true, ja izdevas nomainit statusu
      * @throws \Exception
      */
-    function apikeyExpire($username, $password)
+    public function apikeyExpire($username, $password)
     {
         $params = [];
-        $params["username"] = $username;
-        $params["password"] = $password;
+        $params['username'] = $username;
+        $params['password'] = $password;
 
-        return $this->callServer("apikeyExpire", $params);
+        return $this->callServer('apikeyExpire', $params);
     }
 
     /**
@@ -2027,39 +2017,39 @@ class MGAPI
      * @return string tiek atgriezta API atslega, ja tadas vel nav, tad tiek izveidota
      * @throws \Exception
      */
-    function login($username, $password)
+    public function login($username, $password)
     {
         $params = [];
-        $params["username"] = $username;
-        $params["password"] = $password;
+        $params['username'] = $username;
+        $params['password'] = $password;
 
-        return $this->callServer("login", $params);
+        return $this->callServer('login', $params);
     }
 
     /**
-     * "ping" - vienkar veids, ka parbaudit, vai viss ir kartiba. Ja ir kadas problemas, tiks atgriezts par to pazinojums.
+     * 'ping' - vienkar veids, ka parbaudit, vai viss ir kartiba. Ja ir kadas problemas, tiks atgriezts par to pazinojums.
      *
      * @example mgapi_ping.php
      * @example xml-rpc_ping.php
-     * @return string tiek atgriezts teksts "Everything's Ok!", ja viss ir kartiba, ja nav, tad atgrie˛ kludas pazinojumu
+     * @return string tiek atgriezts teksts 'Everything's Ok!', ja viss ir kartiba, ja nav, tad atgrie˛ kludas pazinojumu
      * @throws \Exception
      */
-    function ping()
+    public function ping()
     {
         $params = [];
 
-        return $this->callServer("ping", $params);
+        return $this->callServer('ping', $params);
     }
 
     /**
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function webhooks()
+    public function webhooks()
     {
         $params = [];
 
-        return $this->callServer("webhooks", $params);
+        return $this->callServer('webhooks', $params);
     }
 
     /**
@@ -2069,13 +2059,13 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function webhookCreate($title, $options = null)
+    public function webhookCreate($title, $options = null)
     {
         $params = [];
-        $params["title"] = $title;
-        $params["options"] = $options;
+        $params['title'] = $title;
+        $params['options'] = $options;
 
-        return $this->callServer("webhookCreate", $params);
+        return $this->callServer('webhookCreate', $params);
     }
 
     /**
@@ -2086,14 +2076,14 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function webhookUpdate($wid, $name, $value)
+    public function webhookUpdate($wid, $name, $value)
     {
         $params = [];
-        $params["wid"] = $wid;
-        $params["name"] = $name;
-        $params["value"] = $value;
+        $params['wid'] = $wid;
+        $params['name'] = $name;
+        $params['value'] = $value;
 
-        return $this->callServer("webhookUpdate", $params);
+        return $this->callServer('webhookUpdate', $params);
     }
 
     /**
@@ -2102,12 +2092,12 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function webhookDelete($wid)
+    public function webhookDelete($wid)
     {
         $params = [];
-        $params["wid"] = $wid;
+        $params['wid'] = $wid;
 
-        return $this->callServer("webhookDelete", $params);
+        return $this->callServer('webhookDelete', $params);
     }
 
     /**
@@ -2116,12 +2106,12 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function webhookReplicate($wid)
+    public function webhookReplicate($wid)
     {
         $params = [];
-        $params["wid"] = $wid;
+        $params['wid'] = $wid;
 
-        return $this->callServer("webhookReplicate", $params);
+        return $this->callServer('webhookReplicate', $params);
     }
 
     /**
@@ -2134,93 +2124,29 @@ class MGAPI
      * @return array|bool|mixed|string
      * @throws \Exception
      */
-    function callServer($method, $params)
+    private function callServer($method, $params)
     {
-        $host = $this->apiUrl["host"];
-        $params["apikey"] = $this->apiKey;
+        $params['apikey'] = $this->apiKey;
 
-        $this->errorMessage = "";
-        $this->errorCode = "";
-        $post_vars = $this->httpBuildQuery($params);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->apiUrl . '&method=' . $method);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
 
-        $payload = "POST " . $this->apiUrl["path"] . "?" . $this->apiUrl["query"] . "&method=" . $method . " HTTP/1.0\r\n";
-        $payload .= "Host: " . $host . "\r\n";
-        $payload .= "User-Agent: MGAPI/" . self::API_VERSION . "\r\n";
-        $payload .= "Content-type: application/x-www-form-urlencoded\r\n";
-        $payload .= "Content-length: " . strlen($post_vars) . "\r\n";
-        $payload .= "Connection: close \r\n\r\n";
-        $payload .= $post_vars;
+        $response = curl_exec($ch);
 
-        ob_start();
-
-        $sock = fsockopen($host, 80, $errno, $errstr, 30);
-        if (!$sock) {
-            ob_end_clean();
-            throw new \Exception('Could not connect socket: ' . $errstr, $errno);
+        // report any errors
+        if ($error = curl_error($ch)) {
+            throw new \Exception('The CURL-request returned an error: ' . $error);
         }
 
-        $response = "";
-        fwrite($sock, $payload);
-        stream_set_timeout($sock, $this->timeout);
-        $info = stream_get_meta_data($sock);
-
-        while ((!feof($sock)) && (!$info["timed_out"])) {
-            $response .= fread($sock, $this->chunkSize);
-            $info = stream_get_meta_data($sock);
+        // close the connection
+        if (is_resource($ch)) {
+            curl_close($ch);
         }
 
-        if ($info["timed_out"]) {
-            throw new \Exception('Could not read response (timed out)');
-        }
-
-        fclose($sock);
-        ob_end_clean();
-
-        list($throw, $response) = explode("\r\n\r\n", $response, 2);
-
-        if (ini_get("magic_quotes_runtime")) {
-            $response = stripslashes($response);
-        }
-
-        $serial = unserialize($response);
-        if ($response && $serial === false) {
-            throw new \Exception('Bad response received: ' . $response);
-        }
-
-        $response = $serial;
-
-        return $response;
-    }
-
-    /**
-     * Definejam funkciju, kas aizstaj http_build_query sistemam, kuras tas nav
-     *
-     * @param      $params
-     * @param null $key
-     *
-     * @return string
-     */
-    function httpBuildQuery($params, $key = null)
-    {
-        if (!function_exists('http_build_query')) {
-            $ret = [];
-
-            foreach ((array)$params as $name => $val) {
-                $name = urlencode($name);
-                if ($key !== null) {
-                    $name = $key . "[" . $name . "]";
-                }
-
-                if (is_array($val) || is_object($val)) {
-                    $ret[] = $this->httpBuildQuery($val, $name);
-                } else if ($val !== null) {
-                    $ret[] = $name . "=" . urlencode($val);
-                }
-            }
-
-            return implode("&", $ret);
-        }
-
-        return http_build_query((array)$params, $key);
+        return json_decode(stripslashes($response));
     }
 }
