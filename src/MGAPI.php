@@ -34,9 +34,9 @@ class MGAPI
      *
      * @param $apiKey string API key to use
      */
-    public function __construct($apiKey)
+    public function __construct(string $apiKey)
     {
-        $this->apiUrl = 'http://api.mailigen.com/' . self::API_VERSION . '/?output=json';
+        $this->apiUrl = 'https://api.mailigen.com/' . self::API_VERSION . '/?output=json';
         $this->apiKey = $apiKey;
     }
 
